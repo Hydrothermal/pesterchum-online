@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pesterchum Online</title>
+    
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/core.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+</head>
+<body>
+    <div id="title">PCO <%= version %></div>
+    <form id="nick" method="POST" action="chat">
+        Handle:<br>
+        <input id="nick-input" type="text" name="nick"><br>
+        <input id="nick-submit" type="submit"><br>
+
+        <div id="error">
+            Invalid handle. A handle must be no more than 30 characters long and may only contain letters, numbers, and the following special characters:<br>
+            <span id="characters">\[]^_-|`</span>
+        </div>
+    </form>
+</body>
+</html>

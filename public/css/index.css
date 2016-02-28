@@ -1,0 +1,67 @@
+html, body {
+    margin: 0px;
+    background-color: #fdc;
+}
+
+#title {
+    margin-top: 10%;
+    margin-bottom: 0.5em;
+    text-align: center;
+    font-weight: bold;
+    font-size: 4em;
+    /* TODO: Import Archive font files */
+    font-family: "Archive", sans-serif;
+}
+
+#nick {
+    font-family: "Trebuchet MS";
+    text-align: center;
+    font-size: 2.5em;
+}
+
+#nick-input {
+    font-family: "Trebuchet MS";
+    text-align: center;
+    font-size: 0.8em;
+    width: 90%;
+    max-width: 500px;
+    padding: 1px 3px;
+    padding-bottom: 3px;
+    border-radius: 8px;
+    outline: 0;
+}
+
+#nick-input:focus {
+    -webkit-transition: background 0.8s ease;
+    -moz-transition: background 0.8s ease;
+    -ms-transition: background 0.8s ease;
+    -o-transition: background 0.8s ease;
+    transition: background 0.8s ease;
+    background-color: #eff;
+    border-color: #bce;
+}
+
+#nick-submit {
+    font-family: "Trebuchet MS";
+    font-size: 0.8em;
+    width: 45%;
+    max-width: 250px;
+    outline: 0;
+}
+
+#error {
+    display: inline-block;
+    opacity: 0;
+    margin-top: 1.5em;
+    font-size: 0.6em;
+    color: #f00;
+    max-width: 600px;
+    padding: 0px 10px;
+}
+
+#characters {
+    font-family: "Consolas";
+    font-weight: bold;
+    color: #b00;
+    letter-spacing: 8px;
+}

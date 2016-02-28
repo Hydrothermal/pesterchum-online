@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pesterchum Online</title>
+
+    <link rel="stylesheet" type="text/css" href="css/chat.css">
+
+    <script type="text/javascript" src="socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/core.js"></script>
+    <script type="text/javascript" src="js/chat.js"></script>
+    <script type="text/javascript" src="js/chat_commands.js"></script>
+    <script type="text/javascript">
+    function registerSocket() {
+        socket.emit("register", "<%- cid %>");
+    }
+    </script>
+</head>
+<body>
+    <img id="chum" src="img/chum.png">
+    <div id="status">
+        Chatting as <span id="nick"></span> in <span id="channel-count"></span> memo<span id="channel-plural">s</span>.
+        <div id="channel-list"></div>
+    </div>
+    <div id="wrapper">
+        <div id="history">
+            <span id="welcome" class="message">Welcome to PCO! Use <b>/join</b> to join a memo or <b>/help</b> for more commands.</span>
+        </div>
+        <form id="input-form">
+            <input id="input" type="text">
+        </form>
+    </div>
+</body>
+</html>

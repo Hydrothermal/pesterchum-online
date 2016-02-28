@@ -1,0 +1,115 @@
+html, body {
+    margin: 0px;
+    background-color: #fdc;
+    height: 100%;
+    overflow: hidden;
+}
+
+#status {
+    padding-top: 4px;
+    padding-left: 18px;
+    padding-right: 18px;
+    font-size: 20px;
+    font-family: "Trebuchet MS";
+}
+
+#nick, #channel-count {
+    font-weight: bold;
+}
+
+#channel-count, #channel-list {
+    font-family: "Consolas", monospace;
+}
+
+#channel-list {
+    width: calc(100% - 40px);
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.channel {
+    margin-right: 1em;
+    cursor: pointer;
+}
+
+.channel:hover {
+    color: #800;
+}
+
+.channel.selected {
+    font-weight: bold;
+    color: #b00;
+    text-decoration: underline;
+}
+
+#chum {
+    position: absolute;
+    height: 40px;
+    top: 8px;
+    right: 12px;
+    opacity: 0.4;
+    cursor: pointer;
+    z-index: 100;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -ms-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+#chum:hover {
+    opacity: 0.6;
+}
+
+#chum.spin {
+    opacity: 1;
+    -moz-transform: scale(4) rotate(360deg);
+    -webkit-transform: scale(4) rotate(360deg);
+    -o-transform: scale(4) rotate(360deg);
+    -ms-transform: scale(4) rotate(360deg);
+    transform: scale(4) rotate(360deg);
+}
+
+#wrapper {
+    position: absolute;
+    bottom: 0px;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    margin-top: 56px;
+    margin-bottom: 8px;
+    margin-right: 8px;
+    margin-left: 8px;
+    border: 1px solid #000;
+    background-color: #fffaf2;
+    border-radius: 16px;
+    border-top-right-radius: 0px;
+}
+
+#history {
+    padding: 5px 8px;
+    height: calc(100% - 33px);
+    overflow-y: scroll;
+    box-sizing: border-box;
+}
+
+#input {
+    font-family: "Consolas", monospace;
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    font-size: 16px;
+    border: none;
+    border-top: 1px solid #000;
+    border-bottom-right-radius: 16px;
+    border-bottom-left-radius: 16px;
+    outline: 0;
+    padding: 4px 12px;
+    padding-bottom: 5px;
+    box-sizing: border-box;
+}
+
+.message {
+    font-family: "Consolas", monospace;
+    font-size: 14px;
+}
