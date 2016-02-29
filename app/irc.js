@@ -9,9 +9,22 @@ function clientRegistered() {
     this.registercb(this.nick);
 }
 
+function clientError(error) {
+    //TODO: fix this
+    console.log(error);
+}
+
 function userJoined(channel, nick, message) {
     this.say(channel, this.user.getTimeMessage(channel));
     this.user.emit("joined", nick, channel);
+}
+
+function userParted(channel, nick, reason, message) {
+    this.user.emit("parted", nick, channel);
+}
+
+function userChangedNick(oldnick, newnick, channels, message) {
+    this.user.emit("nick", oldnick, newnick, channels);
 }
 
 function clientChannelMessage(from, to, text, message) {
@@ -41,7 +54,10 @@ function createClient(user, callback) {
     client.registercb = callback;
 
     client.on("registered", clientRegistered);
+    client.on("error", clientError);
     client.on("join", userJoined);
+    client.on("part", userParted);
+    client.on("nick", userChangedNick);
     client.on("message#", clientChannelMessage);
     client.on("pm", clientPrivateMessage);
 

@@ -19,7 +19,7 @@ function initialize(io) {
 
             if(user) {
                 user.connectSocket(socket);
-                socket.emit("registered", user.nick());
+                socket.emit("nick", user.nick());
                 //socket.emit("channel", "#PesterchumOnline2");
             } else {
                 socket.emit("redirect");
@@ -46,6 +46,14 @@ function initialize(io) {
 
         socket.on("join", function(channel) {
             socket.user.joinChannel(channel);
+        });
+
+        socket.on("part", function(channel) {
+            socket.user.partChannel(channel);
+        });
+
+        socket.on("nick", function(nick) {
+            socket.user.changeNick(nick);
         });
     });
 }

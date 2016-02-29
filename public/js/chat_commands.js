@@ -49,8 +49,7 @@ commands.push({
     }
 });
 
-//TODO
-/*commands.push({
+commands.push({
     uses: ["part", "p", "leave"],
     usage: "/part [#memo]",
     help: "Leaves a memo.",
@@ -60,6 +59,18 @@ commands.push({
     }
 });
 
+commands.push({
+    uses: ["nick", "n"],
+    usage: "/nick [nick]",
+    help: "Changes your nick (handle).",
+    args: 1,
+    fn: function(args) {
+        socket.emit("nick", args[0]);
+    }
+});
+
+//TODO
+/*
 commands.push({
     uses: ["whois", "wi"],
     usage: "/whois [user]",

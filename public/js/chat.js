@@ -5,7 +5,7 @@ function initializeSocket() {
     socket = io();
     registerSocket();
 
-    socket.on("registered", function(nick) {
+    socket.on("nick", function(nick) {
         $("#nick").html(nick);
     });
 
@@ -35,6 +35,11 @@ function initializeSocket() {
         }
 
         selectedchannel = channel;
+        updateChannels();
+    });
+
+    socket.on("remchannel", function(channel) {
+        chans.splice(chans.indexOf(channel), 1);
         updateChannels();
     });
 }

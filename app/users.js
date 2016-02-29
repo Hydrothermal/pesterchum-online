@@ -58,9 +58,27 @@ function receiveJoin(nick, channel) {
         if(nick === this.nick()) {
             this.socket.emit("channel", channel);
         } else {
+            //TODO: client-side handler for this
             this.socket.emit("joined", nick, channel);
         }
     }
+}
+
+function receivePart(nick, channel) {
+    if(this.socket) {
+        if(nick === this.nick()) {
+            this.socket.emit("remchannel", channel);
+        } else {
+            //TODO: client-side handler for this
+            this.socket.emit("parted", nick, channel);
+        }
+    }
+}
+
+function updateNick(oldnick, newnick, channels) {
+    //TODO: Handle other nick changes
+    this.socket.emit("nick", newnick);
+    console.log(oldnick + " -> " + newnick);
 }
 
 //User constructor
@@ -75,6 +93,8 @@ function User(nick, iphash) {
     this.on("message", receiveChannelMessage);
     this.on("pm", receivePrivateMessage);
     this.on("joined", receiveJoin);
+    this.on("parted", receivePart);
+    this.on("nick", updateNick);
 
     console.log("Created user " + this.cid + " with nick " + nick + ".");
 }
@@ -131,6 +151,14 @@ User.prototype.nick = function(initial) {
 
 User.prototype.joinChannel = function(channel, cb) {
     this.irc.join(channel, cb);
+};
+
+User.prototype.partChannel = function(channel, cb) {
+    this.irc.part(channel, cb);
+};
+
+User.prototype.changeNick = function(nick, cb) {
+    this.irc.send("NICK", nick);
 };
 
 User.prototype.remove = function(dc_message) {
