@@ -76,9 +76,9 @@ function receivePart(nick, channel) {
 }
 
 function updateNick(oldnick, newnick, channels) {
-    if(newnick === this.irc.nick); {
+    if(newnick === this.irc.nick) {
         this.socket.emit("nick", newnick);
-        console.log(this.getShortCID() + " changed nick from " oldnick + " to " + newnick + ".");
+        console.log(this.getShortCID() + " changed nick from " + oldnick + " to " + newnick + ".");
     } else {
         //TODO: Handle other nick changes
     }
