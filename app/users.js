@@ -173,6 +173,7 @@ User.prototype.remove = function(dc_message) {
 
 module.exports = {
     User: User,
+    users: users,
     getUser: function(cid) {
         return users[cid];
     }

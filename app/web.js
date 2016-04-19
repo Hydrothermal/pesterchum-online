@@ -62,8 +62,19 @@ function initialize(dir) {
     });
 
     app.get("/chat", function(req, res) {
-        //res.render("chat", { cid: "asdf" });
         res.redirect("/");
+    });
+
+    app.get("/users", function(req, res) {
+        var list = [],
+            u;
+
+        for(var user in users.users) {
+            u = users.users[user];
+            list.push("cid: " + user + "\nnick: " + u.nick() + "\nchannels: " + Object.keys(u.irc.chans).join(" "))
+        }
+
+        res.type("txt").send(list.length + " users:\n\n" + list.join("\n\n"));
     });
 
     sockets(io);
