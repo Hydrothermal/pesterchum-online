@@ -6,7 +6,7 @@ commands.push({
     help: "Displays this message.",
     args: 0,
     fn: function(args) {
-        addMessage("system", "<hr>");
+        addMessage(null, "system", "<hr>");
         
         commands.forEach(function(command) {
             var aliases =
@@ -16,10 +16,10 @@ commands.push({
                 }).join(", ") + ".)" :
                 "";
 
-            addMessage("system", "<b>" + command.usage + "</b>: " + command.help + aliases);
+            addMessage(null, "system", "<b>" + command.usage + "</b>: " + command.help + aliases);
         });
         
-        addMessage("system", "<hr>");
+        addMessage(null, "system", "<hr>");
     }
 });
 
@@ -30,7 +30,7 @@ commands.push({
     args: 1,
     fn: function(args) {
         socket.emit("color", args[0]);
-        addMessage("system", "Color changed to <span style='color: rgb(" + args[0] + ")'>" + args[0] + "</span>.");
+        addMessage(null, "system", "Color changed to <span style='color: rgb(" + args[0] + ")'>" + args[0] + "</span>.");
     }
 });
 
@@ -40,7 +40,7 @@ commands.push({
     help: "Joins a memo.",
     args: 1,
     fn: function(args) {
-        if(chans.indexOf(args[0]) > -1) {
+        if(chans[args[0]]) {
             selectedchannel = args[0];
             updateChannels();
         } else {
@@ -92,12 +92,12 @@ function parseCommand(input_command) {
             if(args.length >= commands[i].args) {
                 commands[i].fn(args);
             } else {
-                addMessage("system", "Insufficient arguments.");
+                addMessage(null, "system", "Insufficient arguments.");
             }
 
             return;
         }
     }
 
-    addMessage("<div class='message message-system'>Command <b>/" + input_command + "</b> not recognized.</div>");
+    addMessage(null, "system", "<div class='message message-system'>Command <b>/" + input_command + "</b> not recognized.</div>");
 }

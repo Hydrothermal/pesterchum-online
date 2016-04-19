@@ -5,7 +5,7 @@ irc.initialize({
     server: "irc.mindfang.org",
     username: "pcc31",
     realnameprefix: "pco-",
-    initial_channels: ["#PesterchumOnline"]
+    initial_channels: []
 });
 
 web(__dirname);

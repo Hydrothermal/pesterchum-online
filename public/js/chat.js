@@ -1,5 +1,10 @@
-var chans = [],
-    selectedchannel, channelcliplength, socket;
+var chans = {
+        network: {
+            html: ""
+        }
+    },
+    selectedchannel = "network",
+    channelcliplength, socket;
 
 function initializeSocket() {
     socket = io();
@@ -26,12 +31,14 @@ function initializeSocket() {
     });
 
     socket.on("pm", function(from, message) {
-        addMessage("message", "&raquo;" + message);
+        addMessage(null, "message", "&raquo;" + message);
     });
 
     socket.on("channel", function(channel) {
-        if(chans.indexOf(channel) === -1) {
-            chans.push(channel);
+        if(!chans[channel]) {
+            chans[channel] = {
+                html: ""
+            };
         }
 
         selectedchannel = channel;
@@ -39,28 +46,37 @@ function initializeSocket() {
     });
 
     socket.on("remchannel", function(channel) {
-        chans.splice(chans.indexOf(channel), 1);
+        delete chans[channel];
         updateChannels();
     });
 }
 
 function updateChannels() {
-    $("#channel-count").html(chans.length);
+    var channel_count = 0;
+
     $("#channel-list").html("");
 
-    chans.forEach(function(channel) {
-        $("#channel-list").append("<span class='channel' data-channel='" + channel + "'>" + clipString(channel, channelcliplength) + "</span>");
+    for(var chan in chans) {
+        $("#channel-list").append("<span class='channel' data-channel='" + chan + "'>" + clipString(chan, channelcliplength) + "</span>");
 
-        if(channel === selectedchannel) {
+        if(chan === selectedchannel) {
             $(".channel").last().click();
         }
-    });
 
-    if(chans.length > 1) {
+        channel_count++;
+    }
+
+    $("#channel-count").html(channel_count);
+
+    if(channel_count > 1) {
         $("#channel-plural").show();
     } else {
         $("#channel-plural").hide();
     }
+}
+
+function updateHistory() {
+    $("#history").html(chans[selectedchannel].html);
 }
 
 function selectChannel() {
@@ -69,13 +85,17 @@ function selectChannel() {
     $(this).addClass("selected");
     selectedchannel = $(this).data("channel");
     $("#input").attr("placeholder", $(this).data("channel")).focus();
+    updateHistory();
 }
 
-function addMessage(type, message) {
+function addMessage(channel, type, message) {
     var history = $("#history")[0],
         is_scrolled = history.scrollTop === history.scrollHeight - history.offsetHeight;
 
-    $("#history").append("<div class='message message-" + type + "'>" + message + "</div>");
+    channel = channel || selectedchannel;
+
+    chans[channel].html += "<div class='message message-" + type + "'>" + message + "</div>";
+    updateHistory();
 
     if(is_scrolled) {
         history.scrollTop = history.scrollHeight;
@@ -83,7 +103,7 @@ function addMessage(type, message) {
 }
 
 function receiveMessage(type, channel, message) {
-    addMessage(type, "<b class='message-channel'>" + clipString(channel, channelcliplength) + "</b> " + message);
+    addMessage(channel, type, message);
 }
 
 function submitMessage() {
@@ -127,4 +147,7 @@ $(function() {
     });
     
     $(document).on("click", ".channel", selectChannel);
+
+    addMessage("network", "system", "Welcome to PCO! Use <b>/join</b> to join a memo or <b>/help</b> for more commands.");
+    updateChannels();
 });
