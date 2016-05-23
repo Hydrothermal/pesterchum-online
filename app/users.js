@@ -21,7 +21,7 @@ function emitChannels() {
 
 //Event handlers
 function receiveLag(lag) {
-    if(this.socket) {
+    if(this.socket.connected) {
         this.socket.emit("lag", lag);
     }
 }
@@ -60,24 +60,20 @@ function receivePrivateMessage(data) {
 }
 
 function receiveJoin(nick, channel) {
-    if(this.socket) {
-        if(nick === this.nick()) {
-            this.socket.emit("channel", channel);
-        } else {
-            //TODO: client-side handler for this
-            this.socket.emit("joined", nick, channel);
-        }
+    if(nick === this.nick()) {
+        this.socket.emit("channel", channel);
+    } else {
+        //TODO: client-side handler for this
+        this.socket.emit("joined", nick, channel);
     }
 }
 
 function receivePart(nick, channel) {
-    if(this.socket) {
-        if(nick === this.nick()) {
-            this.socket.emit("remchannel", channel);
-        } else {
-            //TODO: client-side handler for this
-            this.socket.emit("parted", nick, channel);
-        }
+    if(nick === this.nick()) {
+        this.socket.emit("remchannel", channel);
+    } else {
+        //TODO: client-side handler for this
+        this.socket.emit("parted", nick, channel);
     }
 }
 
@@ -96,6 +92,12 @@ function User(nick, iphash) {
     this.color = "255,0,0"; //TODO: fix this
     this.initialnick = nick;
     this.iphash = iphash;
+
+    this.socket = {
+        emit: function() {
+            console.log(this.getShortCID() + " called socket.emit before socket was connected with arguments: " + Array.prototype.slice.call(arguments) + ".");
+        }.bind(this)
+    };
 
     users[this.cid] = this;
 
