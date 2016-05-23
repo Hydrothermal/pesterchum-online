@@ -71,7 +71,12 @@ function initialize(dir) {
 
         for(var user in users.users) {
             u = users.users[user];
-            list.push("cid: " + user + "\nnick: " + u.nick() + "\nchannels: " + Object.keys(u.irc.chans).join(" "))
+            list.push(
+                "cid: " + user + "\n" +
+                "nick: " + u.nick() + "\n" +
+                "lag: " + u.irc.lag + "ms\n" +
+                "channels: " + Object.keys(u.irc.chans).join(" ")
+            );
         }
 
         res.type("txt").send(list.length + " users:\n\n" + list.join("\n\n"));

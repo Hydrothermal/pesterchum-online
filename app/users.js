@@ -20,6 +20,12 @@ function emitChannels() {
 }
 
 //Event handlers
+function receiveLag(lag) {
+    if(this.socket) {
+        this.socket.emit("lag", lag);
+    }
+}
+
 function receiveChannelMessage(data) {
     var message;
 
@@ -93,6 +99,7 @@ function User(nick, iphash) {
 
     users[this.cid] = this;
 
+    this.on("lag", receiveLag);
     this.on("message", receiveChannelMessage);
     this.on("pm", receivePrivateMessage);
     this.on("joined", receiveJoin);
@@ -162,6 +169,10 @@ User.prototype.partChannel = function(channel, cb) {
 
 User.prototype.changeNick = function(nick, cb) {
     this.irc.send("NICK", nick);
+};
+
+User.prototype.getLag = function() {
+    return this.irc.lag;
 };
 
 User.prototype.remove = function(dc_message) {

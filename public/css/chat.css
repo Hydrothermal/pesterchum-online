@@ -113,3 +113,14 @@ html, body {
     font-family: "Consolas", monospace;
     font-size: 14px;
 }
+
+#lag-indicator {
+    position: absolute;
+    right: 3px;
+    bottom: 17px;
+    border-radius: 50%;
+    width: 6px;
+    height: 6px;
+    border: 1px solid #333;
+    transition: background-color 0.2s ease;
+}

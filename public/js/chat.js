@@ -10,6 +10,26 @@ function initializeSocket() {
     socket = io();
     registerSocket();
 
+    socket.on("lag", function(lag) {
+        var color;
+
+        if(lag < 100) {
+            color = "#0c0";
+        } else if(lag < 250) {
+            color = "#6a0";
+        } else if(lag < 500) {
+            color = "#d90";
+        } else if(lag < 1000) {
+            color = "#f70";
+        } else if(lag < 5000) {
+            color = "#e00"
+        } else {
+            color = "#666";
+        }
+
+        $("#lag-indicator").css("background-color", color);
+    });
+
     socket.on("nick", function(nick) {
         $("#nick").html(nick);
     });
