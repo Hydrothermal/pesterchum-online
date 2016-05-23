@@ -7,11 +7,6 @@ function updateLag(lag) {
     this.user.emit("lag", lag);
 }
 
-function sendLagPing() {
-    //TODO: Consider how to implement updating the lag if the server hasn't responded yet
-    this.send("PING", "LAG" + new Date().getTime());
-}
-
 //Event handlers
 function clientRaw(message) {
     if(message.command === "PONG") {
@@ -32,7 +27,7 @@ function clientRegistered() {
     
     //Initialize lag detection
     updateLag.bind(this)(new Date().getTime() - this.creation.getTime());
-    this.lagpinginterval = setInterval(sendLagPing.bind(this), config.lagcheck_frequency);
+    this.lagpinginterval = setInterval(this.sendLagPing.bind(this), config.lagcheck_frequency);
 }
 
 function clientError(error) {
@@ -91,6 +86,12 @@ function createClient(user, callback) {
 
     return client;
 }
+
+//Extend irc.Client
+irc.Client.prototype.sendLagPing = function() {
+    //TODO: Consider how to implement updating the lag if the server hasn't responded yet
+    this.send("PING", "LAG" + new Date().getTime());
+};
 
 module.exports = {
     initialize: function(_config) {

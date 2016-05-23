@@ -27,7 +27,7 @@ function initializeSocket() {
             color = "#666";
         }
 
-        $("#lag-indicator").css("background-color", color);
+        $("#lag-indicator").css("background-color", color).attr("title", "Lag: " + lag + "ms");
     });
 
     socket.on("nick", function(nick) {
