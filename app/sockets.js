@@ -55,6 +55,10 @@ function initialize(io) {
         socket.on("nick", function(nick) {
             socket.user.changeNick(nick);
         });
+
+        socket.on("names", function(channel) {
+            socket.user.getNames(channel);
+        });
     });
 }
 

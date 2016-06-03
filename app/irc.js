@@ -63,6 +63,10 @@ function clientPrivateMessage(from, text, message) {
     });
 }
 
+function channelNames(channel, names) {
+    this.user.emit("names", channel, this.getNames(channel));
+}
+
 //Client creation
 function createClient(user, callback) {
     var client = new irc.Client(config.server, user.initialnick, {
@@ -83,6 +87,7 @@ function createClient(user, callback) {
     client.on("nick", userChangedNick);
     client.on("message#", clientChannelMessage);
     client.on("pm", clientPrivateMessage);
+    client.on("names", channelNames);
 
     return client;
 }
@@ -91,6 +96,21 @@ function createClient(user, callback) {
 irc.Client.prototype.sendLagPing = function() {
     //TODO: Consider how to implement updating the lag if the server hasn't responded yet
     this.send("PING", "LAG" + new Date().getTime());
+};
+
+irc.Client.prototype.getNames = function(channel) {
+    var users = this.chans[channel.toLowerCase()].users,
+        list = [];
+
+    for(var user in users) {
+        list.push(users[user] + user);
+    }
+
+    return list;
+};
+
+irc.Client.prototype.getServerName = function(channel) {
+    return this.chans[channel.toLowerCase()].serverName;
 };
 
 module.exports = {

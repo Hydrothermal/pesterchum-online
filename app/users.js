@@ -86,6 +86,10 @@ function updateNick(oldnick, newnick, channels) {
     }
 }
 
+function receiveNames(channel, names) {
+    this.socket.emit("names", channel, names);
+}
+
 //User constructor
 function User(nick, iphash) {
     this.cid = generateCID();
@@ -107,6 +111,7 @@ function User(nick, iphash) {
     this.on("joined", receiveJoin);
     this.on("parted", receivePart);
     this.on("nick", updateNick);
+    this.on("names", receiveNames);
 
     console.log("Created user " + this.cid + " with nick " + nick + ".");
 }
@@ -172,6 +177,10 @@ User.prototype.partChannel = function(channel, cb) {
 
 User.prototype.changeNick = function(nick, cb) {
     this.irc.send("NICK", nick);
+};
+
+User.prototype.getNames = function(channel) {
+    this.socket.emit("names", this.irc.getServerName(channel), this.irc.getNames(channel));
 };
 
 User.prototype.getLag = function() {

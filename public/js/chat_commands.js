@@ -69,6 +69,16 @@ commands.push({
     }
 });
 
+commands.push({
+    uses: ["names"],
+    usage: "/names [#memo]",
+    help: "Requests a list of users on a memo.",
+    args: 1,
+    fn: function(args) {
+        socket.emit("names", args[0]);
+    }
+});
+
 //TODO
 /*
 commands.push({

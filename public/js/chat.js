@@ -69,6 +69,10 @@ function initializeSocket() {
         delete chans[channel];
         updateChannels();
     });
+
+    socket.on("names", function(channel, names) {
+        addMessage(channel, "system", "Users on " + channel + ": " + names.join(", ") + ".");
+    });
 }
 
 function updateChannels() {
