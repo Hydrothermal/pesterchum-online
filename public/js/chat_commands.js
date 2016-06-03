@@ -57,7 +57,7 @@ commands.push({
     fn: function(args) {
         var channel = args[0] || selectedchannel;
 
-        if(checkChannel(channel)) {
+        if(checkChannel(channel) && channel !== "network") {
             socket.emit("part", channel);
         }
     }

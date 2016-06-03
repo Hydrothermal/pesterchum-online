@@ -97,6 +97,10 @@ function updateChannels() {
     } else {
         $("#channel-plural").hide();
     }
+
+    if(!checkChannel(selectedchannel, true)) {
+        selectedchannel = $(".channel").last().click().data("channel");
+    }
 }
 
 function updateHistory() {
@@ -151,14 +155,18 @@ function submitMessage() {
     return false;
 }
 
-function checkChannel(channel) {
+function checkChannel(channel, suppressfail) {
     for(var chan in chans) {
         if(chan.toLowerCase() === channel.toLowerCase()) {
             return true;
         }
     }
 
-    addMessage(selectedchannel, "system", "Channel '" + channel + "' does not exist.");
+    if(!suppressfail) {
+        addMessage(selectedchannel, "system", "Channel '" + channel + "' does not exist.");
+    }
+
+    return false;
 }
 
 $(function() {
