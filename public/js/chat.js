@@ -151,6 +151,16 @@ function submitMessage() {
     return false;
 }
 
+function checkChannel(channel) {
+    for(var chan in chans) {
+        if(chan.toLowerCase() === channel.toLowerCase()) {
+            return true;
+        }
+    }
+
+    addMessage(selectedchannel, "system", "Channel '" + channel + "' does not exist.");
+}
+
 $(function() {
     initializeSocket();
 

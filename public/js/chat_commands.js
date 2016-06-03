@@ -51,11 +51,15 @@ commands.push({
 
 commands.push({
     uses: ["part", "p", "leave"],
-    usage: "/part [#memo]",
-    help: "Leaves a memo.",
-    args: 1,
+    usage: "/part (#memo)",
+    help: "Leaves a memo. Defaults to the current memo.",
+    args: 0,
     fn: function(args) {
-        socket.emit("part", args[0]);
+        var channel = args[0] || selectedchannel;
+
+        if(checkChannel(channel)) {
+            socket.emit("part", channel);
+        }
     }
 });
 
@@ -71,11 +75,15 @@ commands.push({
 
 commands.push({
     uses: ["names"],
-    usage: "/names [#memo]",
-    help: "Requests a list of users on a memo.",
-    args: 1,
+    usage: "/names (#memo)",
+    help: "Requests a list of users on a memo. Defaults to the current memo.",
+    args: 0,
     fn: function(args) {
-        socket.emit("names", args[0]);
+        var channel = args[0] || selectedchannel;
+
+        if(checkChannel(channel)) {
+            socket.emit("names", channel);
+        }
     }
 });
 

@@ -110,7 +110,13 @@ irc.Client.prototype.getNames = function(channel) {
 };
 
 irc.Client.prototype.getServerName = function(channel) {
-    return this.chans[channel.toLowerCase()].serverName;
+    channel = this.chans[channel.toLowerCase()];
+
+    if(channel) {
+        return channel.serverName;
+    }
+
+    console.log("Tried to get server name for nonexistent channel '" + channel + "'.");
 };
 
 module.exports = {
