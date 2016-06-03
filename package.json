@@ -15,6 +15,6 @@
         "socket.io": "~1.4"
     },
     "bugs": "https://github.com/Hydrothermal/pesterchum-online/issues",
-    "engine": "node ~0.10",
+    "engines": { "node": ">=0.10" },
     "license": "MIT"
 }
