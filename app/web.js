@@ -3,6 +3,7 @@ var port = +process.env.PORT || 8080,
     express = require("express"),
     bodyParser = require("body-parser"),
     socketio = require("socket.io"),
+    basicAuth = require("basic-auth"),
     crypto = require("crypto"),
     irc = require("./irc"),
     sockets = require("./sockets"),
@@ -16,6 +17,17 @@ var port = +process.env.PORT || 8080,
 function hashIP(ip) {
     return crypto.createHash("md5").update(ip).digest("hex");
 }
+
+function auth(req, res, next) {
+    var user = basicAuth(req);
+
+    if(!user || user.name !== process.env.PCO_ADMIN_USERNAME || user.pass !== process.env.PCO_ADMIN_PASSWORD) {
+        res.set("WWW-Authenticate", "Basic realm=Pesterchum Online");
+        return res.sendStatus(401);
+    }
+
+    return next();
+};
 
 function initialize(dir) {
     //Setting stuff up
@@ -65,7 +77,7 @@ function initialize(dir) {
         res.redirect("/");
     });
 
-    app.get("/users", function(req, res) {
+    app.get("/users", auth, function(req, res) {
         var list = [],
             u;
 
