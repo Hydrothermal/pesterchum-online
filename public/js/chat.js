@@ -51,7 +51,7 @@ function initializeSocket() {
     });
 
     socket.on("pm", function(from, message) {
-        addMessage(null, "message", "&raquo;" + message);
+        addMessage(null, "message", from + " &raquo; " + message);
     });
 
     socket.on("channel", function(channel) {
