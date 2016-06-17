@@ -85,6 +85,7 @@ function initialize(dir) {
             u = users.users[user];
             list.push(
                 "cid: " + user + "\n" +
+                "iphash: " + u.iphash + "\n" +
                 "nick: " + u.nick() + "\n" +
                 "lag: " + u.irc.lag + "ms\n" +
                 "channels: " + Object.keys(u.irc.chans).join(" ")
