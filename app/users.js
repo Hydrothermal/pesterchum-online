@@ -127,7 +127,7 @@ User.prototype.connectSocket = function(socket) {
     this.socket = socket;
     socket.user = this;
 
-    emitChannels.bind(this)(this.irc.channels);
+    emitChannels.bind(this)();
     this.irc.sendLagPing();
 };
 

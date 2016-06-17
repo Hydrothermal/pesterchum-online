@@ -9,12 +9,13 @@ commands.push({
         addMessage(null, "system", "<hr>");
         
         commands.forEach(function(command) {
-            var aliases =
-                command.uses.length > 1 ?
-                " (Aliases: " + command.uses.slice(1).map(function(command) {
+            var aliases = "";
+
+            if(command.uses.length > 1) {
+                aliases = " (Aliases: " + command.uses.slice(1).map(function(command) {
                     return "<b>/" + command + "</b>";
-                }).join(", ") + ".)" :
-                "";
+                }).join(", ") + ".)";
+            }
 
             addMessage(null, "system", "<b>" + command.usage + "</b>: " + command.help + aliases);
         });

@@ -2,12 +2,7 @@ var socketio = require("socket.io"),
     users = require("./users");
 
 function receiveMessage(socket, type, to, message) {
-    var fn =
-        type === "message" ?
-        socket.user.sendFormattedMessage.bind(socket.user) :
-        socket.user.sendRawMessage.bind(socket.user);
-
-    fn(to, message);
+    socket.user[type === "message" ? "sendFormattedMessage" : "sendRawMessage"].bind(socket.user)(to, message);
 }
 
 function initialize(io) {

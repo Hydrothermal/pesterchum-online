@@ -117,6 +117,7 @@ function selectChannel() {
 }
 
 function addMessage(channel, type, message) {
+    //is_scrolled must be set before appending the new message
     var history = $("#history")[0],
         is_scrolled = history.scrollTop === history.scrollHeight - history.offsetHeight;
 
