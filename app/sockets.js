@@ -1,11 +1,14 @@
-var socketio = require("socket.io"),
-    users = require("./users");
+var users = require("./users"),
+
+    io;
 
 function receiveMessage(socket, type, to, message) {
     socket.user[type === "message" ? "sendFormattedMessage" : "sendRawMessage"].bind(socket.user)(to, message);
 }
 
-function initialize(io) {
+function initialize(_io) {
+    io = _io;
+
     io.on("connection", function(socket) {
         socket.on("register", function(cid) {
             var user = users.getUser(cid);
@@ -57,4 +60,9 @@ function initialize(io) {
     });
 }
 
-module.exports = initialize;
+module.exports = {
+    initialize: initialize,
+    broadcast: function(message) {
+        io.emit("broadcast", message);
+    }
+};

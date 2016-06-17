@@ -73,6 +73,13 @@ function initializeSocket() {
     socket.on("names", function(channel, names) {
         addMessage(channel, "system", "Users on " + channel + ": " + names.join(", ") + ".");
     });
+
+    socket.on("broadcast", function(message) {
+        message = "System broadcast: " + message;
+        
+        addMessage(selectedchannel, "system", "<b>" + message + "</b>");
+        alert(message);
+    });
 }
 
 function updateChannels() {

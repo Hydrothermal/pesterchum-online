@@ -95,7 +95,19 @@ function initialize(dir) {
         res.type("txt").send(list.length + " users:\n\n" + list.join("\n\n"));
     });
 
-    sockets(io);
+    app.get("/broadcast", auth, function(req, res) {
+        var message = req.query.message;
+
+        if(message) {
+            sockets.broadcast(message);
+            console.log("Broadcasted \"" + message + "\".");
+            res.type("txt").send("broadcasted \"" + message + "\"");
+        } else {
+            res.type("txt").send("no message specified");
+        }
+    });
+
+    sockets.initialize(io);
 }
 
 module.exports = initialize;
