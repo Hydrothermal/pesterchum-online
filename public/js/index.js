@@ -4,7 +4,7 @@ $(function() {
     $("#nick").submit(function() {
         var nick = $("#nick-input").val();
 
-        if(!/^[a-z0-9\\[\]\^_\-|`]{0,30}$/i.test(nick)) {
+        if(!/^[a-z0-9\\[\]\^_\-|`]{1,30}$/i.test(nick)) {
             $("#error").animate({ opacity: 1 }, 150);
 
             //Lazy way to detect a mobile screen and blur the input so the mobile keyboard stops covering up the error
