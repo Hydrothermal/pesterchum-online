@@ -69,7 +69,7 @@ function initialize(dir) {
             });
         } else {
             //Invalid handle
-            res.redirect("/");
+            res.redirect("/?err");
         }
     });
 
