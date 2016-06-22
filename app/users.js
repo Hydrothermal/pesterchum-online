@@ -56,7 +56,15 @@ function receiveChannelMessage(data) {
 function receivePrivateMessage(data) {
     var message = pesterchum.escapeAndColor(data.message);
 
-    this.socket.emit("pm", data.from, message);
+    switch(pesterchum.getMessageType(data.message)) {
+        case "unknown":
+            this.socket.emit("pm", data.from, data.to, message);
+        break;
+
+        case "action":
+            this.socket.emit("pm", data.from, data.to, pesterchum.parseAction(data.from, data.message, "C"));
+        break;
+    }
 }
 
 function receiveJoin(nick, channel) {
@@ -139,15 +147,30 @@ User.prototype.disconnectIRC = function(message) {
     this.irc.disconnect(message || "Quit");
 };
 
+User.prototype.sendMessage = function(to, message) {
+    if(to[0] === "#") {
+        this.sendFormattedMessage(to, message);
+    } else {
+        this.sendRawMessage(to, message);
+    }
+};
+
 User.prototype.sendRawMessage = function(to, message) {
     this.irc.say(to, message);
     
-    //TODO: Fix for private messages
-    receiveChannelMessage.bind(this)({
-        from: this.nick(),
-        channel: to,
-        message: message
-    });
+    if(to[0] === "#") {
+        receiveChannelMessage.bind(this)({
+            from: this.nick(),
+            to: to,
+            message: message
+        });
+    } else {
+        receivePrivateMessage.bind(this)({
+            from: this.nick(),
+            to: to,
+            message: message
+        });
+    }
 };
 
 User.prototype.sendFormattedMessage = function(to, message) {

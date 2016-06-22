@@ -4,7 +4,7 @@ var chans = {
         }
     },
     selectedchannel = "network",
-    channelcliplength, socket;
+    channelcliplength, socket, nick;
 
 function initializeSocket() {
     socket = io();
@@ -30,7 +30,8 @@ function initializeSocket() {
         $("#lag-indicator").css("background-color", color).attr("title", "Lag: " + lag + "ms");
     });
 
-    socket.on("nick", function(nick) {
+    socket.on("nick", function(_nick) {
+        nick = _nick;
         $("#nick").html(nick);
     });
 
@@ -50,8 +51,20 @@ function initializeSocket() {
         receiveMessage("action", channel, message);
     });
 
-    socket.on("pm", function(from, message) {
-        addMessage(null, "message", from + " &raquo; " + message);
+    socket.on("pm", function(from, to, message) {
+        var tab;
+
+        if(from === nick) {
+            tab = to;
+        } else {
+            tab = from;
+        }
+
+        if(chans[tab]) {
+            addMessage(tab, "message", from + ": " + message);
+        } else {
+            addMessage(null, "message", from + " &raquo; " + message);
+        }
     });
 
     socket.on("channel", function(channel) {
@@ -199,5 +212,6 @@ $(function() {
     $(document).on("click", ".channel", selectChannel);
 
     addMessage("network", "system", "Welcome to PCO! Use <b>/join</b> to join a memo or <b>/help</b> for more commands.");
+    addMessage("network", "system", "Pestering is now supported! Don't forget to check <b>/help</b> for new commands.");
     updateChannels();
 });

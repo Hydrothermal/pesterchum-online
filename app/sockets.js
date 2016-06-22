@@ -2,10 +2,6 @@ var users = require("./users"),
 
     io;
 
-function receiveMessage(socket, type, to, message) {
-    socket.user[type === "message" ? "sendFormattedMessage" : "sendRawMessage"].bind(socket.user)(to, message);
-}
-
 function initialize(_io) {
     io = _io;
 
@@ -35,11 +31,11 @@ function initialize(_io) {
         });
 
         socket.on("message", function(to, message) {
-            receiveMessage(socket, "message", to, message);
+            socket.user.sendMessage(to, message);
         });
 
         socket.on("action", function(to, message) {
-            receiveMessage(socket, "action", to, message);
+            socket.user.sendRawMessage(to, message);
         });
 
         socket.on("join", function(channel) {

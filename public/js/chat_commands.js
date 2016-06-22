@@ -36,6 +36,23 @@ commands.push({
 });
 
 commands.push({
+    uses: ["pester", "query"],
+    usage: "/pester [handle]",
+    help: "Opens a pester tab with another user.",
+    args: 1,
+    fn: function(args) {
+        if(!chans[args[0]]) {
+            chans[args[0]] = {
+                html: ""
+            };
+        }
+        
+        selectedchannel = args[0];
+        updateChannels();
+    }
+});
+
+commands.push({
     uses: ["join", "j"],
     usage: "/join [#memo]",
     help: "Joins a memo.",
