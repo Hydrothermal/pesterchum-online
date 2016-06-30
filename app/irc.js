@@ -124,7 +124,7 @@ module.exports = {
         config = _config;
     },
     validateNick: function(nick) {
-        return /^[a-z0-9\\[\]\^_\-|`]{1,30}$/i.test(nick);
+        return !!nick && /^[a-z0-9\\[\]\^_\-|`]{1,30}$/i.test(nick);
     },
     createClient: createClient
 };
