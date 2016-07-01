@@ -93,6 +93,10 @@ function initializeSocket() {
         addMessage(selectedchannel, "system", "<b>" + message + "</b>");
         alert(message);
     });
+
+    socket.on("notice", function(message) {
+        addMessage(selectedchannel, "system", message);
+    });
 }
 
 function updateChannels() {
@@ -212,6 +216,6 @@ $(function() {
     $(document).on("click", ".channel", selectChannel);
 
     addMessage("network", "system", "Welcome to PCO! Use <b>/join</b> to join a memo or <b>/help</b> for more commands.");
-    addMessage("network", "system", "Pestering is now supported! Don't forget to check <b>/help</b> for new commands.");
+    addMessage("network", "system", "Whois is now supported! Don't forget to check <b>/help</b> for new commands.");
     updateChannels();
 });

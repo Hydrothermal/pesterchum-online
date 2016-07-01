@@ -105,17 +105,15 @@ commands.push({
     }
 });
 
-//TODO
-/*
 commands.push({
     uses: ["whois", "wi"],
-    usage: "/whois [user]",
-    help: "Sends a whois request to get information on a user.",
+    usage: "/whois [handle]",
+    help: "Sends a whois request to get information on a user (handle is case-sensitive).",
     args: 1,
     fn: function(args) {
         socket.emit("whois", args[0]);
     }
-});*/
+});
 
 function parseCommand(input_command) {
     var args = input_command.split(" ");

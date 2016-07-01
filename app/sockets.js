@@ -53,6 +53,10 @@ function initialize(_io) {
         socket.on("names", function(channel) {
             socket.user.getNames(channel);
         });
+
+        socket.on("whois", function(nick) {
+            socket.user.whois(nick);
+        });
     });
 }
 

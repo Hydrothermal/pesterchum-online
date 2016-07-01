@@ -1,7 +1,7 @@
 {
     "name": "pesterchum-online",
     "author": "Hydrothermal",
-    "version": "1.5.1",
+    "version": "1.6.0",
     "description": "browser-based pesterchum client",
     "repository": {
         "type": "git",

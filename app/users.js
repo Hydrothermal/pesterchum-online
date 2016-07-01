@@ -210,6 +210,21 @@ User.prototype.getLag = function() {
     return this.irc.lag;
 };
 
+User.prototype.whois = function(nick) {
+    var socket = this.socket;
+
+    console.log(this.getShortCID() + " whoised " + nick + ".");
+
+    this.irc.whois(nick, function(data) {
+        //TODO: Fix case-sensitive whois
+        if(data.host) {
+            socket.emit("notice", data.nick + "!" + data.user + "@" + data.host + " :" + data.realname);
+        } else {
+            socket.emit("notice", "Could not find a user with the handle '" + nick + "'. Remember this command is case-sensitive!");
+        }
+    });
+};
+
 User.prototype.remove = function(dc_message) {
     console.log("Removed user " + this.getShortCID() + ".");
 
