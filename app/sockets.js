@@ -1,5 +1,14 @@
 var users = require("./users"),
 
+    forwarded_events = [
+        ["message", "sendMessage"],
+        ["action", "sendRawMessage"],
+        ["join", "joinChannel"],
+        ["part", "partChannel"],
+        ["nick", "changeNick"],
+        ["names", "getNames"],
+        ["whois", "whois"]
+    ],
     io;
 
 function initialize(_io) {
@@ -30,32 +39,10 @@ function initialize(_io) {
             this.user.color = color;
         });
 
-        socket.on("message", function(to, message) {
-            socket.user.sendMessage(to, message);
-        });
-
-        socket.on("action", function(to, message) {
-            socket.user.sendRawMessage(to, message);
-        });
-
-        socket.on("join", function(channel) {
-            socket.user.joinChannel(channel);
-        });
-
-        socket.on("part", function(channel) {
-            socket.user.partChannel(channel);
-        });
-
-        socket.on("nick", function(nick) {
-            socket.user.changeNick(nick);
-        });
-
-        socket.on("names", function(channel) {
-            socket.user.getNames(channel);
-        });
-
-        socket.on("whois", function(nick) {
-            socket.user.whois(nick);
+        forwarded_events.forEach(function(pair) {
+            socket.on(pair[0], function() {
+                socket.user[pair[1]].apply(socket.user, arguments);
+            });
         });
     });
 }
