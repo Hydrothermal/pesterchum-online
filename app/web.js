@@ -55,8 +55,7 @@ function initialize(dir) {
 
     app.post("/chat", function(req, res) {
         var nick = req.body.nick,
-            //TODO: test req.ip
-            iphash = hashIP(req.headers["x-forwarded-for"] || req.connection.remoteAddress),
+            iphash = hashIP(req.ip || req.headers["x-forwarded-for"] || req.connection.remoteAddress),
             user;
 
         if(irc.validateNick(nick)) {
