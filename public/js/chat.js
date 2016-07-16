@@ -173,7 +173,7 @@ function submitMessage() {
 
     if(type === "command") {
         parseCommand(message.substr(1));
-    } else {
+    } else if(selectedchannel !== "network") {
         socket.emit(type, selectedchannel, message);
     }
 
