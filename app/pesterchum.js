@@ -4,7 +4,9 @@ var irc = require("./irc"),
         moods: {
             list: ["chummy", "rancorous", "offline", "pleasant", "distraught", "pranky", "smooth", "ecstatic", "relaxed", "discontent", "devious", "sleek", "detestful", "mirthful", "manipulative", "vigorous", "perky", "acceptant", "protective", "mystified", "amazed", "insolent", "bemused"]
         },
-        time: {}
+        time: {
+            symbols: { c: "current", p: "past", f: "future" }
+        }
     };
 
 pesterchum.initials = function(handle) {
@@ -49,7 +51,7 @@ pesterchum.parseAction = function(handle, message, time) {
     message = message.substr(4);
 
     //TODO: Color initials
-    return "--- " + pesterchum.time.symbolToWord(time).toUpperCase() + " " + handle +
+    return "-- " + pesterchum.time.symbolToWord(time).toUpperCase() + " " + handle +
         " [" + time + pesterchum.initials(handle) + "] " + helpers.escape(message) + " --";
 };
 
@@ -91,8 +93,7 @@ pesterchum.time.parseMessage = function(message) {
 };
 
 pesterchum.time.symbolToWord = function(time) {
-    //TODO: Maybe move this to global
-    return ({ "c": "current", "p": "past", "f": "future" })[time.toLowerCase()];
+    return pesterchum.time.symbols[time.toLowerCase()];
 };
 
 //Moods
