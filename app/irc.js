@@ -32,6 +32,7 @@ function clientRegistered() {
 
 function clientError(error) {
     //TODO: fix this
+    console.log(this.user.getShortCID() + " experienced IRC error:");
     console.log(error);
 }
 
