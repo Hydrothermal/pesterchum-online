@@ -14,7 +14,7 @@ var port = +process.env.PORT || 8080,
     server = http.createServer(app),
     io;
 
-function hashIP(ip) {
+function hash(ip) {
     return crypto.createHash("md5").update(ip).digest("hex");
 }
 
@@ -55,7 +55,7 @@ function initialize(dir) {
 
     app.post("/chat", function(req, res) {
         var nick = req.body.nick,
-            iphash = hashIP(req.ip || req.headers["x-forwarded-for"] || req.connection.remoteAddress),
+            iphash = hash(req.ip || req.headers["x-forwarded-for"] || req.connection.remoteAddress),
             user;
 
         if(irc.validateNick(nick)) {

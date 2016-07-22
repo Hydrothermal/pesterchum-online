@@ -50,18 +50,11 @@ function userChangedNick(oldnick, newnick, channels, message) {
 }
 
 function clientChannelMessage(from, to, text, message) {
-    this.user.emit("message", {
-        from: from,
-        channel: to,
-        message: text
-    });
+    this.user.emit("message", from, to, text);
 }
 
 function clientPrivateMessage(from, text, message) {
-    this.user.emit("pm", {
-        from: from,
-        message: text
-    });
+    this.user.emit("pm", from, null, text);
 }
 
 function clientNotice(from, to, text, message) {

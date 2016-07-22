@@ -132,11 +132,12 @@ function updateHistory() {
 }
 
 function selectChannel() {
-    //TODO: Clean up
     $(".selected").removeClass("selected");
     $(this).addClass("selected");
+
     selectedchannel = $(this).data("channel");
-    $("#input").attr("placeholder", $(this).data("channel")).focus();
+    $("#input").attr("placeholder", selectedchannel).focus();
+    
     updateHistory();
 }
 

@@ -26,20 +26,20 @@ function receiveLag(lag) {
     }
 }
 
-function receiveChannelMessage(data) {
+function receiveChannelMessage(from, channel, message) {
     var message;
 
     //TODO: Read actual time instead of hardcoding current
-    switch(pesterchum.getMessageType(data.message)) {
+    switch(pesterchum.getMessageType(message)) {
         case "message":
-            message = pesterchum.time.insertIntoMessage("C", data.message);
+            message = pesterchum.time.insertIntoMessage("C", message);
             message = pesterchum.escapeAndColor(message);
-            this.socket.emit("message", data.from, data.channel, message);
+            this.socket.emit("message", from, channel, message);
         break;
 
         case "action":
-            message = pesterchum.parseAction(data.from, data.message, "C");
-            this.socket.emit("action", data.from, data.channel, message);
+            message = pesterchum.parseAction(from, message, "C");
+            this.socket.emit("action", from, channel, message);
         break;
 
         case "time":
@@ -47,22 +47,22 @@ function receiveChannelMessage(data) {
         break;
 
         case "unknown":
-            message = helpers.escape(data.message);
-            this.socket.emit("ugly message", data.from, data.channel, message);
+            message = helpers.escape(message);
+            this.socket.emit("ugly message", from, channel, message);
         break;
     }
 }
 
-function receivePrivateMessage(data) {
-    var message = pesterchum.escapeAndColor(data.message);
+function receivePrivateMessage(from, to, message) {
+    var message = pesterchum.escapeAndColor(message);
 
-    switch(pesterchum.getMessageType(data.message)) {
+    switch(pesterchum.getMessageType(message)) {
         case "unknown":
-            this.socket.emit("pm", data.from, data.to, message);
+            this.socket.emit("pm", from, null, message);
         break;
 
         case "action":
-            this.socket.emit("pm", data.from, data.to, pesterchum.parseAction(data.from, data.message, "C"));
+            this.socket.emit("pm", from, null, pesterchum.parseAction(from, message, "C"));
         break;
     }
 }
@@ -107,7 +107,7 @@ function receiveEntrymsg(channel, entrymsg) {
 //User constructor
 function User(nick, iphash) {
     this.cid = generateCID();
-    this.color = "255,0,0"; //TODO: fix this
+    this.color = "0,0,0";
     this.initialnick = nick;
     this.iphash = iphash;
 
@@ -166,17 +166,9 @@ User.prototype.sendRawMessage = function(to, message) {
     this.irc.say(to, message);
     
     if(to[0] === "#") {
-        receiveChannelMessage.bind(this)({
-            from: this.nick(),
-            to: to,
-            message: message
-        });
+        receiveChannelMessage.bind(this)(this.nick(), to, message);
     } else {
-        receivePrivateMessage.bind(this)({
-            from: this.nick(),
-            to: to,
-            message: message
-        });
+        receivePrivateMessage.bind(this)(this.nick(), to, message);
     }
 };
 
