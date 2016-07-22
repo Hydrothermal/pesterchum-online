@@ -64,6 +64,15 @@ function clientPrivateMessage(from, text, message) {
     });
 }
 
+function clientNotice(from, to, text, message) {
+    var entrymsg = /^\[(#.+?)\] (.+)/.exec(text);
+
+    if(from === "ChanServ" && entrymsg) {
+        console.log(entrymsg[2]);
+        this.user.emit("entrymsg", entrymsg[1], entrymsg[2]);
+    }
+}
+
 function channelNames(channel, names) {
     this.user.emit("names", channel, this.getNames(channel));
 }
@@ -88,6 +97,7 @@ function createClient(user, callback) {
     client.on("nick", userChangedNick);
     client.on("message#", clientChannelMessage);
     client.on("pm", clientPrivateMessage);
+    client.on("notice", clientNotice);
     client.on("names", channelNames);
 
     return client;

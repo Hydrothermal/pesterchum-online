@@ -98,6 +98,12 @@ function receiveNames(channel, names) {
     this.socket.emit("names", channel, names);
 }
 
+function receiveEntrymsg(channel, entrymsg) {
+    console.log(entrymsg);
+    //TODO: Store so that the user can check without having to scroll
+    this.socket.emit("message", null, channel, "[" + channel + "] " + entrymsg);
+}
+
 //User constructor
 function User(nick, iphash) {
     this.cid = generateCID();
@@ -120,6 +126,7 @@ function User(nick, iphash) {
     this.on("parted", receivePart);
     this.on("nick", updateNick);
     this.on("names", receiveNames);
+    this.on("entrymsg", receiveEntrymsg);
 
     console.log("Created user " + this.cid + " with nick " + nick + ".");
 }
