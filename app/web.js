@@ -95,15 +95,20 @@ function initialize(dir) {
     });
 
     app.get("/broadcast", auth, function(req, res) {
-        var message = req.query.message;
+        res.render("broadcast", {
+            message: ""
+        });
+    });
+
+    app.post("/broadcast", auth, function(req, res) {
+        var message = req.body.message;
 
         if(message) {
             sockets.broadcast(message);
             console.log("Broadcasted \"" + message + "\".");
-            res.type("txt").send("broadcasted \"" + message + "\"");
-        } else {
-            res.type("txt").send("no message specified");
         }
+        
+        res.redirect("broadcast");
     });
 
     sockets.initialize(io);
