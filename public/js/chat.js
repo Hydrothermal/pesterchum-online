@@ -147,6 +147,12 @@ function addMessage(channel, type, message) {
 
     channel = channel || selectedchannel;
 
+    //This generally shouldn't happen
+    if(!chans[channel]) {
+        message = "[" + channel + "] " + message;
+        channel = "network";
+    }
+
     chans[channel].html += "<div class='message message-" + type + "'>" + message + "</div>";
     updateHistory();
 
