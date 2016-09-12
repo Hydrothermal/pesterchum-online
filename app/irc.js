@@ -54,7 +54,7 @@ function clientChannelMessage(from, to, text, message) {
 }
 
 function clientPrivateMessage(from, text, message) {
-    this.user.emit("pm", from, null, text);
+    this.user.emit("pm", from, text);
 }
 
 function clientNotice(from, to, text, message) {

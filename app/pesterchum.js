@@ -34,8 +34,12 @@ pesterchum.getMessageType = function(message) {
         return "time";
     }
 
-    if(message.substr(0, 16) === "PESTERCHUM:BEGIN" || message.substr(0, 16) === "PESTERCHUM:CEASE") {
-        return "pester";
+    if(message.substr(0, 16) === "PESTERCHUM:BEGIN") {
+        return "pester begin";
+    }
+
+    if(message.substr(0, 16) === "PESTERCHUM:CEASE") {
+        return "pester cease";
     }
 
     if(message.substr(0, 7) === "COLOR >") {

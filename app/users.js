@@ -34,7 +34,7 @@ function receiveChannelMessage(from, channel, message) {
         case "message":
             message = pesterchum.time.insertIntoMessage("C", message);
             message = pesterchum.escapeAndColor(message);
-            this.socket.emit("message", from, channel, message);
+            this.socket.emit("message", channel, message);
 
             checkMention.bind(this)(channel, message);
         break;
@@ -57,16 +57,32 @@ function receiveChannelMessage(from, channel, message) {
     }
 }
 
-function receivePrivateMessage(from, to, message) {
-    var message = pesterchum.escapeAndColor(message);
+function receivePrivateMessage(from, message, self) {
+    var escaped = pesterchum.escapeAndColor(message),
+        tab = from,
+        initials;
+
+    if(self) {
+        initials = this.initials();
+        from = this.nick();
+    } else {
+        initials = pesterchum.initials(from);
+    }
 
     switch(pesterchum.getMessageType(message)) {
         case "unknown":
-            this.socket.emit("pm", from, null, message);
+            this.socket.emit("pm", tab, initials, escaped);
+        break;
+
+        case "pester begin":
+        case "pester cease":
+        case "color":
+            //TODO: Handle beginning/ceasing pesters
+            //TODO: Handle color parsing and storing
         break;
 
         case "action":
-            this.socket.emit("pm", from, null, pesterchum.parseAction(from, message, "C"));
+            this.socket.emit("pm", tab, null, pesterchum.parseAction(from, escaped, "C"));
         break;
     }
 }
@@ -183,7 +199,7 @@ User.prototype.sendRawMessage = function(to, message) {
     if(to[0] === "#") {
         receiveChannelMessage.bind(this)(this.nick(), to, message);
     } else {
-        receivePrivateMessage.bind(this)(this.nick(), to, message);
+        receivePrivateMessage.bind(this)(to, message, true);
     }
 };
 
@@ -196,12 +212,12 @@ User.prototype.getTimeMessage = function(channel) {
     return pesterchum.time.createMessage();
 };
 
-User.prototype.nick = function(initial) {
-    if(initial) {
-        return this.initialnick;
-    }
-
+User.prototype.nick = function() {
     return this.irc.nick;
+};
+
+User.prototype.initials = function() {
+    return pesterchum.initials(this.nick());
 };
 
 User.prototype.joinChannel = function(channel, cb) {

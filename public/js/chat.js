@@ -43,7 +43,7 @@ function initializeSocket() {
         location.assign("/");
     });
 
-    socket.on("message", function(from, channel, message) {
+    socket.on("message", function(channel, message) {
         receiveMessage("message", channel, message);
     });
 
@@ -51,20 +51,10 @@ function initializeSocket() {
         receiveMessage("action", channel, message);
     });
 
-    socket.on("pm", function(from, to, message) {
+    socket.on("pm", function(tab, initials, message) {
         var tab;
 
-        if(from === nick) {
-            tab = to;
-        } else {
-            tab = from;
-        }
-
-        if(chans[tab]) {
-            addMessage(tab, "message", from + ": " + message);
-        } else {
-            addMessage(null, "message", from + " &raquo; " + message);
-        }
+        addMessage(tab, "message", (initials ? (initials + ": ") : "") + message);
     });
 
     socket.on("channel", function(channel) {
@@ -160,8 +150,12 @@ function addMessage(channel, type, message) {
 
     //This generally shouldn't happen
     if(!chans[channel]) {
-        message = "[" + channel + "] " + message;
-        channel = "network";
+        chans[channel] = {
+            html: ""
+        };
+        
+        selectedchannel = channel;
+        updateChannels();
     }
 
     chans[channel].html += "<div class='message message-" + type + "'>" + message + "</div>";
