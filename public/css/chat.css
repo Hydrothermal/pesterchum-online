@@ -36,6 +36,10 @@ html, body {
     color: #800;
 }
 
+.channel.mentioned {
+    color: #06f;
+}
+
 .channel.selected {
     font-weight: bold;
     color: #b00;

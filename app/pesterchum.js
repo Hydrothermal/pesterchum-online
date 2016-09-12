@@ -10,8 +10,7 @@ var irc = require("./irc"),
     };
 
 pesterchum.initials = function(handle) {
-    var upper = /[A-Z]/.exec(handle);
-    return handle[0].toUpperCase() + (upper ? upper : "");
+    return handle[0].toUpperCase() + (/[A-Z]/.exec(handle) || "");
 };
 
 pesterchum.createMessage = function(handle, color, message) {
@@ -35,6 +34,22 @@ pesterchum.getMessageType = function(message) {
         return "time";
     }
 
+    if(message.substr(0, 16) === "PESTERCHUM:BEGIN" || message.substr(0, 16) === "PESTERCHUM:CEASE") {
+        return "pester";
+    }
+
+    if(message.substr(0, 7) === "COLOR >") {
+        return "color";
+    }
+
+    if(message.substr(0, 6) === "MOOD >") {
+        return "mood";
+    }
+
+    if(message.substr(0, 7) === "GETMOOD") {
+        return "getmood";
+    }
+
     return "unknown";
 };
 
@@ -53,6 +68,21 @@ pesterchum.parseAction = function(handle, message, time) {
     //TODO: Color initials
     return "-- " + pesterchum.time.symbolToWord(time).toUpperCase() + " " + handle +
         " [" + time + pesterchum.initials(handle) + "] " + helpers.escape(message) + " --";
+};
+
+pesterchum.getMentions = function(handle) {
+    var initials = pesterchum.initials(handle),
+        mentions = [new RegExp("\\b" + handle + "\\b", "i")];
+
+    if(initials.length === 2) {
+        mentions.push(new RegExp("\\b(" +
+            initials + "|" +
+            initials[0].toLowerCase() + initials[1] + "|" +
+            initials[0] + initials[1].toLowerCase() +
+        ")\\b"));
+    }
+
+    return mentions;
 };
 
 //Time

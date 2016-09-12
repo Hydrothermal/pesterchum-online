@@ -4,7 +4,7 @@ var chans = {
         }
     },
     selectedchannel = "network",
-    channelcliplength, socket, nick;
+    channelcliplength, socket, nick, mention;
 
 function initializeSocket() {
     socket = io();
@@ -97,6 +97,16 @@ function initializeSocket() {
     socket.on("notice", function(message) {
         addMessage(selectedchannel, "system", message);
     });
+
+    socket.on("mention", function(channel) {
+        mention.pause();
+        mention.currentTime = 0;
+        mention.play();
+
+        if(selectedchannel !== channel) {
+            $(".channel[data-channel=\\" + channel + "]").addClass("mentioned")
+        }
+    });
 }
 
 function updateChannels() {
@@ -133,7 +143,7 @@ function updateHistory() {
 
 function selectChannel() {
     $(".selected").removeClass("selected");
-    $(this).addClass("selected");
+    $(this).addClass("selected").removeClass("mentioned");
 
     selectedchannel = $(this).data("channel");
     $("#input").attr("placeholder", selectedchannel).focus();
@@ -205,6 +215,7 @@ $(function() {
     initializeSocket();
 
     channelcliplength = Math.max(6, Math.floor(window.innerWidth / 80));
+    mention = $("#sound-mention")[0];
     
     $("#input").focus();
 
@@ -223,5 +234,6 @@ $(function() {
     $(document).on("click", ".channel", selectChannel);
 
     addMessage("network", "system", "Welcome to PCO! Use <b>/join</b> to join a memo or <b>/help</b> for more commands.");
+    addMessage("network", "system", "Pings have been added! A sound will be played and the tab highlighted when your initials or full handle are mentioned.");
     updateChannels();
 });

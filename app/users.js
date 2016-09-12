@@ -35,11 +35,15 @@ function receiveChannelMessage(from, channel, message) {
             message = pesterchum.time.insertIntoMessage("C", message);
             message = pesterchum.escapeAndColor(message);
             this.socket.emit("message", from, channel, message);
+
+            checkMention.bind(this)(channel, message);
         break;
 
         case "action":
             message = pesterchum.parseAction(from, message, "C");
             this.socket.emit("action", from, channel, message);
+
+            checkMention.bind(this)(channel, message);
         break;
 
         case "time":
@@ -88,6 +92,7 @@ function receivePart(nick, channel) {
 function updateNick(oldnick, newnick, channels) {
     if(newnick === this.irc.nick) {
         this.socket.emit("nick", newnick);
+        this.mentions = pesterchum.getMentions(newnick);
         console.log(this.getShortCID() + " changed nick from " + oldnick + " to " + newnick + ".");
     } else {
         //TODO: Handle other nick changes
@@ -104,12 +109,22 @@ function receiveEntrymsg(channel, entrymsg) {
     this.socket.emit("message", null, channel, "[" + channel + "] " + entrymsg);
 }
 
+function checkMention(channel, message) {
+    for(var i = 0; i < this.mentions.length; i++) {
+        if(this.mentions[i].test(message)) {
+            this.socket.emit("mention", channel);
+            break;
+        }
+    }
+}
+
 //User constructor
 function User(nick, iphash) {
     this.cid = generateCID();
     this.color = "0,0,0";
     this.initialnick = nick;
     this.iphash = iphash;
+    this.mentions = pesterchum.getMentions(nick);
 
     this.socket = {
         emit: function() {
