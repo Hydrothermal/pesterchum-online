@@ -1,7 +1,7 @@
 {
     "name": "pesterchum-online",
     "author": "Hydrothermal",
-    "version": "1.10.0",
+    "version": "1.10.1",
     "description": "browser-based pesterchum client",
     "repository": {
         "type": "git",
@@ -13,7 +13,8 @@
         "express": "~4.13",
         "irc": "~0.4",
         "socket.io": "~1.4",
-        "basic-auth": "~1.0"
+        "basic-auth": "~1.0",
+        "pesterchum": "~1.0"
     },
     "bugs": "https://github.com/Hydrothermal/pesterchum-online/issues",
     "engines": { "node": ">=0.10" },

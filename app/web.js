@@ -5,7 +5,7 @@ var port = +process.env.PORT || 8080,
     socketio = require("socket.io"),
     basicAuth = require("basic-auth"),
     crypto = require("crypto"),
-    irc = require("./irc"),
+    pesterchum = require("pesterchum"),
     sockets = require("./sockets"),
     users = require("./users"),
 
@@ -58,7 +58,7 @@ function initialize(dir) {
             iphash = hash(req.ip || req.headers["x-forwarded-for"] || req.connection.remoteAddress),
             user;
 
-        if(irc.validateNick(nick)) {
+        if(pesterchum.validateHandle(nick)) {
             user = new users.User(nick, iphash);
 
             user.connectIRC(function(nick) {

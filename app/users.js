@@ -2,7 +2,7 @@ var crypto = require("crypto"),
     EventEmitter = require("events"),
     util = require("util"),
     helpers = require("./helpers"),
-    pesterchum = require("./pesterchum"),
+    pesterchum = require("pesterchum"),
     irc = require("./irc"),
 
     users = {};
