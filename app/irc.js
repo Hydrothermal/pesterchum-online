@@ -61,7 +61,6 @@ function clientNotice(from, to, text, message) {
     var entrymsg = /^\[(#.+?)\] (.+)/.exec(text);
 
     if(from === "ChanServ" && entrymsg) {
-        console.log(entrymsg[2]);
         this.user.emit("entrymsg", entrymsg[1], entrymsg[2]);
     }
 }
