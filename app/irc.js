@@ -45,6 +45,12 @@ function userParted(channel, nick, reason, message) {
     this.user.emit("parted", nick, channel);
 }
 
+function userQuit(nick, reason, channels, message) {
+    for(var i = 0; i < channels.length; i++) {
+        this.user.emit("parted", nick, channels[i]);
+    }
+}
+
 function userChangedNick(oldnick, newnick, channels, message) {
     this.user.emit("nick", oldnick, newnick, channels);
 }
@@ -86,6 +92,7 @@ function createClient(user, callback) {
     client.on("error", clientError);
     client.on("join", userJoined);
     client.on("part", userParted);
+    client.on("quit", userQuit);
     client.on("nick", userChangedNick);
     client.on("message#", clientChannelMessage);
     client.on("pm", clientPrivateMessage);

@@ -92,9 +92,37 @@ html, body {
 
 #history {
     padding: 5px 8px;
-    height: calc(100% - 33px);
+    width: calc(100% - 150px);
+    border-right: 1px solid #000;
+    height: calc(100% - 29px);
     overflow-y: scroll;
     box-sizing: border-box;
+}
+#history.full {
+    width: 100%;
+    border: none;
+}
+
+#names {
+    overflow-x: scroll;
+    padding: 3px;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    background-color: #fff8e0;
+    width: 150px;
+    height: calc(100% - 29px);
+    font-family: "Consolas", monospace;
+    font-size: 14px;
+    line-height: 16px;
+    box-sizing: border-box;
+}
+
+.name {
+    cursor: pointer;
+}
+.name:hover {
+    font-weight: bold;
 }
 
 #input {

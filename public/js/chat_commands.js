@@ -42,9 +42,7 @@ commands.push({
     args: 1,
     fn: function(args) {
         if(!chans[args[0]]) {
-            chans[args[0]] = {
-                html: ""
-            };
+            initializeChannel(args[0], true);
         }
         
         selectedchannel = args[0];

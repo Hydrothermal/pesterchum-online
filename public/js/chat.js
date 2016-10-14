@@ -1,8 +1,4 @@
-var chans = {
-        network: {
-            html: ""
-        }
-    },
+var chans = {},
     selectedchannel = "network",
     channelcliplength, socket, nick, mention;
 
@@ -59,9 +55,7 @@ function initializeSocket() {
 
     socket.on("channel", function(channel) {
         if(!chans[channel]) {
-            chans[channel] = {
-                html: ""
-            };
+            initializeChannel(channel);
         }
 
         selectedchannel = channel;
@@ -74,7 +68,8 @@ function initializeSocket() {
     });
 
     socket.on("names", function(channel, names) {
-        addMessage(channel, "system", "Users on " + channel + ": " + names.join(", ") + ".");
+        chans[channel].names = names;
+        updateNames();
     });
 
     socket.on("broadcast", function(message) {
@@ -97,6 +92,18 @@ function initializeSocket() {
             $(".channel[data-channel=\\" + channel + "]").addClass("mentioned")
         }
     });
+
+    socket.on("joined", function(nick, channel) {
+        chans[channel].names.push(nick);
+        updateNames(channel);
+    });
+
+    socket.on("parted", function(nick, channel) {
+        var names = chans[channel].names;
+        
+        names.splice(names.indexOf(nick), 1);
+        updateNames(channel);
+    });
 }
 
 function updateChannels() {
@@ -114,14 +121,6 @@ function updateChannels() {
         channel_count++;
     }
 
-    $("#channel-count").html(channel_count);
-
-    if(channel_count > 1) {
-        $("#channel-plural").show();
-    } else {
-        $("#channel-plural").hide();
-    }
-
     if(!checkChannel(selectedchannel, true)) {
         selectedchannel = $(".channel").last().click().data("channel");
     }
@@ -131,6 +130,20 @@ function updateHistory() {
     $("#history").html(chans[selectedchannel].html);
 }
 
+function updateNames() {
+    $("#names").html(sortNames(chans[selectedchannel].names).map(function(name) {
+        return "<div class='name'>" + name + "</div>";
+    }));
+}
+
+function initializeChannel(channel, user) {
+    chans[channel] = {
+        html: "",
+        names: [],
+        user: user || false
+    };
+}
+
 function selectChannel() {
     $(".selected").removeClass("selected");
     $(this).addClass("selected").removeClass("mentioned");
@@ -138,6 +151,15 @@ function selectChannel() {
     selectedchannel = $(this).data("channel");
     $("#input").attr("placeholder", selectedchannel).focus();
     
+    if(chans[selectedchannel].user) {
+        $("#names").hide();
+        $("#history").addClass("full");
+    } else {
+        updateNames();
+        $("#names").show();
+        $("#history").removeClass("full");
+    }
+
     updateHistory();
 }
 
@@ -150,10 +172,7 @@ function addMessage(channel, type, message) {
 
     //This generally shouldn't happen
     if(!chans[channel]) {
-        chans[channel] = {
-            html: ""
-        };
-        
+        initializeChannel(channel);        
         selectedchannel = channel;
         updateChannels();
     }
@@ -206,6 +225,7 @@ function checkChannel(channel, suppressfail) {
 }
 
 $(function() {
+    initializeChannel("network", true)
     initializeSocket();
 
     channelcliplength = Math.max(6, Math.floor(window.innerWidth / 80));
@@ -225,7 +245,18 @@ $(function() {
         }, 200);
     });
     
-    $(document).on("click", ".channel", selectChannel);
+    $(document)
+        .on("click", ".channel", selectChannel)
+        .on("click", ".name", function() {
+            var name = this.innerHTML.replace(/[~&@%+]/g, "");
+
+            if(!chans[name]) {
+                initializeChannel(name, true);
+            }
+            
+            selectedchannel = name;
+            updateChannels();
+        });
 
     addMessage("network", "system", "Welcome to PCO! Use <b>/join</b> to join a memo or <b>/help</b> for more commands.");
     addMessage("network", "system", "Pings have been added! A sound will be played and the tab highlighted when your initials or full handle are mentioned.");
