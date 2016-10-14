@@ -117,6 +117,9 @@ html, body {
     line-height: 16px;
     box-sizing: border-box;
 }
+#names.hidden {
+    display: none;
+}
 
 .name {
     cursor: pointer;

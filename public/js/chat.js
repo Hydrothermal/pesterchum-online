@@ -152,11 +152,11 @@ function selectChannel() {
     $("#input").attr("placeholder", selectedchannel).focus();
     
     if(chans[selectedchannel].user) {
-        $("#names").hide();
+        $("#names, #show-names").addClass("hidden");
         $("#history").addClass("full");
     } else {
         updateNames();
-        $("#names").show();
+        $("#names, #show-names").removeClass("hidden");
         $("#history").removeClass("full");
     }
 
@@ -243,6 +243,18 @@ $(function() {
         setTimeout(function() {
             $this.removeClass("spin");
         }, 200);
+    });
+
+    $("#show-names").click(function() {
+        if(this.className === "pull") {
+            $("#names").addClass("shown");
+            $("#history").addClass("bumped");
+            $("#show-names").removeClass("pull").addClass("push");
+        } else {
+            $("#names").removeClass("shown");
+            $("#history").removeClass("bumped");
+            $("#show-names").removeClass("push").addClass("pull");
+        }
     });
     
     $(document)
