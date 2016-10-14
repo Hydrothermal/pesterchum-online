@@ -271,6 +271,6 @@ $(function() {
         });
 
     addMessage("network", "system", "Welcome to PCO! Use <b>/join</b> to join a memo or <b>/help</b> for more commands.");
-    addMessage("network", "system", "Pings have been added! A sound will be played and the tab highlighted when your initials or full handle are mentioned.");
+    addMessage("network", "system", "There is now a graphical names list. On mobile, it's hidden by default; click the arrow in the upper right to show it.");
     updateChannels();
 });
