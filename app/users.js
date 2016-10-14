@@ -120,9 +120,8 @@ function receiveNames(channel, names) {
 }
 
 function receiveEntrymsg(channel, entrymsg) {
-    console.log(entrymsg);
     //TODO: Store so that the user can check without having to scroll
-    this.socket.emit("message", null, channel, "[" + channel + "] " + entrymsg);
+    this.socket.emit("message", channel, "[" + channel + "] " + entrymsg);
 }
 
 function checkMention(channel, message) {
