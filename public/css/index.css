@@ -4,13 +4,19 @@ html, body {
 }
 
 #title {
-    margin-top: 10%;
+    margin-top: 12%;
     margin-bottom: 0.5em;
     text-align: center;
     font-weight: bold;
     font-size: 4em;
     /* TODO: Import Archive font files */
     font-family: "Archive", sans-serif;
+    line-height: 28px;
+}
+
+#plsplspls {
+    font-family: "Trebuchet MS";
+    font-size: 14px;
 }
 
 #nick {
