@@ -2,6 +2,8 @@
 <html>
 <head>
     <title>Broadcast</title>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/broadcast.js"></script>
 </head>
 <body>
     <%= message %>
@@ -9,5 +11,7 @@
         <input type="text" name="message" autofocus><br>
         <input type="submit" value="Send broadcast">
     </form>
+    <input type="button" value="Updates warning" id="warn-update">
+    <div id="ticking"></div>
 </body>
 </html>
