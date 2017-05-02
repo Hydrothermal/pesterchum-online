@@ -75,6 +75,10 @@ function channelNames(channel, names) {
     this.user.emit("names", channel, this.getNames(channel));
 }
 
+function channelList(list) {
+    this.user.emit("list", list);
+}
+
 //Client creation
 function createClient(user, callback) {
     var client = new irc.Client(config.server, user.initialnick, {
@@ -98,6 +102,7 @@ function createClient(user, callback) {
     client.on("pm", clientPrivateMessage);
     client.on("notice", clientNotice);
     client.on("names", channelNames);
+    client.on("channellist", channelList);
 
     return client;
 }

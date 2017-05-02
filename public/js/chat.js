@@ -29,6 +29,7 @@ function initializeSocket() {
     socket.on("nick", function(_nick) {
         nick = _nick;
         $("#nick").html(nick);
+        $("#nick-input").val(nick);
     });
 
     socket.on("redirect", function() {
@@ -103,6 +104,11 @@ function initializeSocket() {
         
         names.splice(names.indexOf(nick), 1);
         updateNames(channel);
+    });
+
+    socket.on("list", function(list) {
+        $("#server-channels-wrapper").show().height($("#settings").height() - 70);
+        $("#server-channels").html(list);
     });
 }
 
@@ -238,6 +244,7 @@ $(function() {
     $("#chum").click(function() {
         var $this = $(this);
         
+        $("#settings").toggleClass("show");
         $this.addClass("spin");
 
         setTimeout(function() {
@@ -256,6 +263,10 @@ $(function() {
             $("#show-names").removeClass("push").addClass("pull");
         }
     });
+
+    $("#list-memos").click(function() {
+        socket.emit("list");
+    });
     
     $(document)
         .on("click", ".channel", selectChannel)
@@ -268,9 +279,12 @@ $(function() {
             
             selectedchannel = name;
             updateChannels();
+        })
+        .on("click", "#server-channels .channel-name", function() {
+            parseCommand("join " + this.innerHTML);
         });
 
     addMessage("network", "system", "Welcome to PCO! Use <b>/join</b> to join a memo or <b>/help</b> for more commands.");
-    addMessage("network", "system", "There is now a graphical names list. On mobile, it's hidden by default; click the arrow in the upper right to show it.");
+    addMessage("network", "system", "There is now a settings panel with a memo list. Click the chum in the top right to open it.");
     updateChannels();
 });

@@ -4,6 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Pesterchum Online</title>
 
+    <link rel="stylesheet" type="text/css" href="css/core.css">
     <link rel="stylesheet" type="text/css" href="css/chat.css">
     <link rel="stylesheet" type="text/css" href="css/chat_mobile.css">
 
@@ -32,6 +33,14 @@
             <input id="input" type="text" autocomplete="off">
             <div id="lag-indicator"></div>
         </form>
+    </div>
+    <div id="settings">
+        Nick: <input type="text" id="nick-input" spellcheck="false" autocorrect="off" autocapitalize="off" disabled><br>
+        <button id="list-memos">List memos</button>
+        <div id="server-channels-wrapper">
+            <div id="channels-header"><span class="channel-name">Memo</span><span class="channel-users">Users</span></div>
+            <div id="server-channels"></div>
+        </div>
     </div>
     <audio src="snd/mention.ogg" id="sound-mention"></audio>
 </body>

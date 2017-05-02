@@ -1,0 +1,18 @@
+html, body {
+    margin: 0px;
+    background-color: #fdc;
+    height: 100%;
+    font-family: "Trebuchet MS";
+}
+
+input, button {
+    font-family: "Trebuchet MS";
+}
+
+table {
+    border-spacing: 0px;
+}
+
+table td {
+    padding: 0px;
+}

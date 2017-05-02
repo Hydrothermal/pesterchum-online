@@ -7,7 +7,8 @@ var users = require("./users"),
         ["part", "partChannel"],
         ["nick", "changeNick"],
         ["names", "getNames"],
-        ["whois", "whois"]
+        ["whois", "whois"],
+        ["list", "list"]
     ],
     io;
 

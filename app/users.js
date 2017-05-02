@@ -133,6 +133,14 @@ function checkMention(channel, message) {
     }
 }
 
+function receiveChannelList(list) {
+    this.socket.emit("list", list.filter(c => c.name !== "#pesterchum").sort((a, b) => {
+        a = a.name.toLowerCase();
+        b = b.name.toLowerCase();
+        return a < b ? -1 : a > b ? 1 : 0;
+    }).map(c => `<span class="channel-name">${c.name}</span><span class="channel-users">${c.users}</span>`));
+}
+
 //User constructor
 function User(nick, iphash) {
     this.cid = generateCID();
@@ -157,6 +165,7 @@ function User(nick, iphash) {
     this.on("nick", updateNick);
     this.on("names", receiveNames);
     this.on("entrymsg", receiveEntrymsg);
+    this.on("list", receiveChannelList);
 
     console.log("Created user " + this.cid + " with nick " + nick + ".");
 }
@@ -252,6 +261,10 @@ User.prototype.whois = function(nick) {
             socket.emit("notice", "Could not find a user with the handle '" + nick + "'. Remember this command is case-sensitive!");
         }
     });
+};
+
+User.prototype.list = function() {
+    this.irc.list();
 };
 
 User.prototype.remove = function(dc_message) {

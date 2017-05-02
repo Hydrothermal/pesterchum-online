@@ -1,7 +1,4 @@
 html, body {
-    margin: 0px;
-    background-color: #fdc;
-    height: 100%;
     overflow: hidden;
 }
 
@@ -98,6 +95,7 @@ html, body {
     overflow-y: scroll;
     box-sizing: border-box;
 }
+
 #history.full {
     width: 100%;
     border: none;
@@ -117,6 +115,7 @@ html, body {
     line-height: 16px;
     box-sizing: border-box;
 }
+
 #names.hidden {
     display: none;
 }
@@ -158,4 +157,75 @@ html, body {
     height: 6px;
     border: 1px solid #333;
     transition: background-color 0.2s ease;
+}
+
+#settings {
+    font: 16px "Trebuchet MS";
+    padding: 8px;
+    position: absolute;
+    background-color: #ffeb96;
+    height: calc(100% - 66px - 16px);
+    width: 284px;
+    top: 56px;
+    border: 1px solid #000;
+    right: -302px;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -ms-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+#settings.show {
+    right: -1px;
+}
+
+#nick-input {
+    outline: 0;
+    padding: 1px 4px;
+    margin-left: 4px;
+    width: 224px;
+    background-color: #fff1eb;
+    border: 1px solid #000;
+}
+
+#list-memos {
+    font-size: 16px;
+    padding: 4px;
+    width: 100%;
+    margin-top: 8px;
+}
+
+#server-channels-wrapper {
+    display: none;
+    overflow-y: scroll;
+    overflow-x: visible;
+    padding-right: 4px;
+}
+
+#channels-header {
+    font: bold 16px "Trebuchet MS";
+}
+
+#server-channels {
+    font: 12px "Consolas";
+}
+
+.channel-name, .channel-users {
+    display: inline-block;
+}
+
+.channel-name {
+    width: calc(100% - 40px);
+}
+
+.channel-users {
+    width: 40px;
+}
+
+#server-channels .channel-name:hover {
+    text-decoration: underline;
+    color: #00f;
+    font-weight: bold;
+    cursor: pointer;
 }
