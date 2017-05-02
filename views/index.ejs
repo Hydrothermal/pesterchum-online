@@ -6,6 +6,7 @@
     
     <link rel="stylesheet" type="text/css" href="css/core.css">
     <link rel="stylesheet" type="text/css" href="css/index.css">
+    <link rel="stylesheet" type="text/css" href="css/hamburgers.css">
 
     <script type="text/javascript" src="js/jquery.min.js"></script>
     <script type="text/javascript" src="js/core.js"></script>
@@ -18,7 +19,15 @@
     </div>
     <form id="nick" method="POST" action="chat">
         Handle:<br>
-        <input id="nick-input" type="text" name="nick"><br>
+        <div id="nick-input-wrapper">
+            <input id="nick-input" type="text" name="nick">
+            <button id="nick-menuicon" class="hamburger hamburger--vortex" type="button">
+                <span class="hamburger-box">
+                    <span class="hamburger-inner"></span>
+                </span>
+            </button>
+            <div id="nick-menu"></div>
+        </div><br>
         <input id="nick-submit" type="submit"><br>
 
         <div id="error">

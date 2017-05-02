@@ -20,26 +20,62 @@
     font-size: 2.5em;
 }
 
+#nick-input-wrapper {
+    position: relative;
+    width: 90%;
+    max-width: 500px;
+    display: inline-block;
+}
+
 #nick-input {
     font-family: "Trebuchet MS";
     text-align: center;
-    font-size: 0.8em;
-    width: 90%;
-    max-width: 500px;
+    font-size: 26px;
+    height: 37px;
+    width: calc(100% - 10px);
     padding: 1px 3px;
     padding-bottom: 3px;
     border-radius: 8px;
     outline: 0;
-}
-
-#nick-input:focus {
     -webkit-transition: background 0.8s ease;
     -moz-transition: background 0.8s ease;
     -ms-transition: background 0.8s ease;
     -o-transition: background 0.8s ease;
     transition: background 0.8s ease;
-    background-color: #eff;
-    border-color: #bce;
+}
+
+#nick-input.open {
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+
+#nick-menuicon {
+    position: absolute;
+    padding: 0px;
+    top: 13px;
+    right: 10px;
+    height: 36px;
+}
+
+#nick-menuicon .hamburger-box {
+    top: -10px;
+}
+
+#nick-menu {
+    display: none;
+    position: absolute;
+    width: calc(100% - 8px);
+    top: 44px;
+    border: 2px inset;
+    border-top: none;
+    background-color: #fff;
+    text-align: left;
+    padding-left: 4px;
+    font-size: 18px;
+}
+
+#nick-menu .nick {
+    cursor: pointer;
 }
 
 #nick-submit {
