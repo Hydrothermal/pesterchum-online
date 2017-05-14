@@ -38,6 +38,7 @@ function initialize(dir) {
     app.use(bodyParser.json());
     app.set("views", dir + "/views");
     app.use(express.static(dir + "/public"));
+    app.enable("trust proxy");
 
     app.locals = {
         version: version
@@ -55,7 +56,7 @@ function initialize(dir) {
 
     app.post("/chat", function(req, res) {
         var nick = req.body.nick,
-            iphash = hash(req.ip || req.headers["x-forwarded-for"] || req.connection.remoteAddress),
+            iphash = hash(req.ip),
             user;
 
         if(pesterchum.validateHandle(nick)) {
